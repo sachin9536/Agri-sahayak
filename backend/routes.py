@@ -60,7 +60,7 @@ def _load_global_vector_store() -> FAISS:
     if _global_vector_store is None:
         if not os.path.isdir(GLOBAL_INDEX_DIR):
             raise HTTPException(status_code=500, detail="Global FAISS index not found. Run ingestion script first.")
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
         _global_vector_store = FAISS.load_local(
             GLOBAL_INDEX_DIR,
             embeddings,
@@ -309,4 +309,5 @@ async def get_conversation_by_id_route(conversation_id: str):
         {"question": row["question"], "answer": row["answer"], "timestamp": row["timestamp"]}
         for row in rows
     ]
-        return {"conversation": conversation}
+    # Ensure stable keys
+    return {"conversation": conversation}
